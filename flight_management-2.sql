@@ -1,14 +1,4 @@
 
---
--- Database: flight_management
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table aeroplanecapacity
---
-
 CREATE TABLE aeroplanecapacity (
   aeroplanecapacityid int NOT NULL,
   totalcapacity int NOT NULL,
@@ -26,7 +16,7 @@ CREATE TABLE aeroplanecapacity (
 
 CREATE TABLE aeroplanes (
   aeroplanesid int NOT NULL,
-  aeroplanetype varchar(10) check(aeroplanetype in ('Goods','Passenger')),
+  aeroplanetype varchar(10) check(aeroplanetype in ('goods','passenger')) NOT NULL,
   aeroplanecapacityid int NOT NULL
 );
 
@@ -54,7 +44,7 @@ CREATE TABLE airlinecrew (
 CREATE TABLE airlinecrewphonenumber (
   airlinecrewphonenumberid int NOT NULL,
   airlinecrewid int NOT NULL,
-  phonenumber varchar(20) NOT NULL
+  phonenumber int NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -65,7 +55,8 @@ CREATE TABLE airlinecrewphonenumber (
 
 CREATE TABLE airlines (
   airlineid int NOT NULL,
-  airlinename varchar(50) NOT NULL
+  airlinename varchar(50) NOT NULL,
+  totalaeroplanes int NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -88,9 +79,9 @@ CREATE TABLE airlinesaeroplanes (
 
 CREATE TABLE airports (
   airportid int NOT NULL,
-  airportname varchar(60) NOT NULL,
-  airportcity varchar(50) NOT NULL,
-  airportcountry varchar(50) NOT NULL,
+  airportname varchar(100) NOT NULL,
+  airportcity varchar(100) NOT NULL,
+  airportcountry varchar(100) NOT NULL,
   totalterminals int NOT NULL,
   totalrunways int NOT NULL
 );
@@ -134,8 +125,8 @@ CREATE TABLE flightsgoing (
   departureairportid int NOT NULL,
   arrivalairportid int NOT NULL,
   flighttype varchar(20) check(flighttype in ('Domestic','International')) NOT NULL,
-  arrivaldatetime timestamp NOT NULL,
-  departuredatetime timestamp NOT NULL,
+  arrivaldate timestamp NOT NULL,
+  departuredate timestamp NOT NULL,
   destinationdistance int NOT NULL,
   arrivalterminalid int NOT NULL,
   departureterminalid int NOT NULL,
@@ -178,7 +169,7 @@ CREATE TABLE passengersgoing (
 CREATE TABLE passengersphonenumber (
   passengersphonenumberid int NOT NULL,
   passengerid int NOT NULL,
-  phonenumber varchar(20) NOT NULL
+  phonenumber int NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -190,7 +181,6 @@ CREATE TABLE passengersphonenumber (
 CREATE TABLE runways (
   runwaysid int NOT NULL,
   runwayno int NOT NULL,
-  runwayname varchar(20) NOT NULL,
   airportid int NOT NULL
 );
 
@@ -203,7 +193,7 @@ CREATE TABLE runways (
 CREATE TABLE terminals (
   terminalsid int NOT NULL,
   terminalno int NOT NULL,
-  terminalname varchar(20) NOT NULL,
+  terminalname int NOT NULL,
   airportid int NOT NULL
 );
 
@@ -400,6 +390,7 @@ ALTER TABLE flightcrew
 ALTER TABLE flightcrewhostess
   MODIFY flightcrewhostessid int NOT NULL;
 
+
 --
 -- for table flightsgoing
 --
@@ -478,7 +469,6 @@ ALTER TABLE flightcrew
 ALTER TABLE flightcrew
   ADD CONSTRAINT flightcrew_ibfk_4 FOREIGN KEY (flightid) REFERENCES flightsgoing (flightsgoingid);
 
-
 --
 -- Constraints for table flightcrewhostess
 --
@@ -487,7 +477,6 @@ ALTER TABLE flightcrewhostess
 
 ALTER TABLE flightcrewhostess
   ADD CONSTRAINT flightcrewhostess_ibfk_2 FOREIGN KEY (airelinecrewid) REFERENCES airlinecrew (crewid);
-
 --
 -- Constraints for table flightsgoing
 --
@@ -513,6 +502,7 @@ ALTER TABLE passengersgoing
   ADD CONSTRAINT passengersgoing_ibfk_1 FOREIGN KEY (passengerid) REFERENCES passengers (passengersid);
 ALTER TABLE passengersgoing
   ADD CONSTRAINT passengersgoing_ibfk_2 FOREIGN KEY (flightid) REFERENCES flightsgoing (flightsgoingid);
+
 --
 -- Constraints for table passengersphonenumber
 --
@@ -532,6 +522,3 @@ ALTER TABLE terminals
   ADD CONSTRAINT terminals_ibfk_1 FOREIGN KEY (airportid) REFERENCES airports (airportid);
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
