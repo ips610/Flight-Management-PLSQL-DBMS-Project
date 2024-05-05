@@ -1,0 +1,15 @@
+drop table flightcrew;
+drop table airlinecrew;
+drop table aeroplanes;
+drop table flightcrewhostess;
+drop table aeroplanecapacity;
+drop table airlines;
+drop table airlinesaeroplanes;
+drop table passengers;
+drop table flightsgoing;
+drop table airlinecrewphonenumber;
+drop table airports;
+drop table terminals;
+drop table runways;
+drop table passengersgoing;
+drop table passengersphonenumber;
